@@ -6,7 +6,7 @@ import renderChild from './utils/renderChild';
 
 function getStateFromProps(value, props) {
   value = props.onValuePreUpdate(value);
-  let processedValue = applyMaskToString(value, props.pattern, props.emptyChar);
+  let processedValue = props.applyMaskToString(value, props.pattern, props.emptyChar);
   const validatedValue = props.onValidate(value, processedValue);
   if (validatedValue && validatedValue.result) {
     processedValue = validatedValue;
@@ -42,13 +42,15 @@ export default class Mask extends PureComponent {
     getInputElement: PropTypes.func,
     value: PropTypes.string,
     pattern: PropTypes.string.isRequired,
-    emptyChar: PropTypes.string
+    emptyChar: PropTypes.string,
+    applyMaskToString: PropTypes.func
   };
 
   static defaultProps = {
     emptyChar: ' ',
     onValidate: () => {},
-    onValuePreUpdate: v => v
+    onValuePreUpdate: v => v,
+    applyMaskToString: applyMaskToString
   };
 
   componentWillReceiveProps(nextProps) {
